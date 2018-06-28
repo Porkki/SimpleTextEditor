@@ -9,7 +9,10 @@ namespace SimpleTextEditor.Model
 {
     class TextHandlerModel : INotifyPropertyChanged
     {
+        //Stores what text we have currently in file and/or in texteditor
         private string _TextContent;
+
+        private string _FilePath;
 
         public string TextContent
         {
@@ -23,6 +26,22 @@ namespace SimpleTextEditor.Model
                 {
                     _TextContent = value;
                     RaisePropertyChanged("TextContent");
+                }
+            }
+        }
+
+        public string FilePath
+        {
+            get
+            {
+                return _FilePath;
+            }
+            set
+            {
+                if (value != _FilePath)
+                {
+                    _FilePath = value;
+                    RaisePropertyChanged("FilePath");
                 }
             }
         }
