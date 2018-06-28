@@ -36,7 +36,7 @@ namespace SimpleTextEditor.ViewModel
             set
             {
                 handlerModel.TextContent = value;
-                //If we change something ex opening new file we raise propertychanged event to notify ui
+                //If we change something ex. opening new file we raise propertychanged event to notify ui
                 RaisePropertyChanged("TextContent");
             }
         }
@@ -52,11 +52,14 @@ namespace SimpleTextEditor.ViewModel
 
     class FileOpenCommand : ICommand
     {
+        //We make new ViewModel object called parent
         TextHandlerViewModel parent;
-
+        
         public FileOpenCommand(TextHandlerViewModel parent)
         {
+            //Assigns FileOpenCommand parent to TextHandlerViewModel so we can access the data
             this.parent = parent;
+            //This is black magic
             parent.PropertyChanged += delegate { CanExecuteChanged?.Invoke(this, EventArgs.Empty); };
         }
 
@@ -69,8 +72,11 @@ namespace SimpleTextEditor.ViewModel
 
         public void Execute(object parameter)
         {
+            //Creates new OpenFileDialog called openFile
             OpenFileDialog openFile = new OpenFileDialog();
 
+            /*Opens the file dialog and sets the ViewModels 
+             * textcontent to whatever file user decides to open */
             if (openFile.ShowDialog() == true)
             {
                 parent.TextContent = File.ReadAllText(openFile.FileName);
