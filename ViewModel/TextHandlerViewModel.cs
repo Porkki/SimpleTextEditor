@@ -13,6 +13,7 @@ namespace SimpleTextEditor.ViewModel
 {
     class TextHandlerViewModel : INotifyPropertyChanged
     {
+        //Creating an instance of the TextHandlerModel
         public TextHandlerModel handlerModel { get; set; }
 
         //Commands (for buttons etc)
@@ -20,10 +21,12 @@ namespace SimpleTextEditor.ViewModel
 
         public TextHandlerViewModel()
         {
+            //Assigning handerlModel new instance of TextHandlerModel
             handlerModel = new TextHandlerModel();
             OpenCommand = new FileOpenCommand(this);
         }
 
+        //Getting and setting TextContent to handlerModel
         public string TextContent
         {
             get
@@ -33,6 +36,7 @@ namespace SimpleTextEditor.ViewModel
             set
             {
                 handlerModel.TextContent = value;
+                //If we change something ex opening new file we raise propertychanged event to notify ui
                 RaisePropertyChanged("TextContent");
             }
         }

@@ -23,6 +23,7 @@ namespace SimpleTextEditor
         public MainWindow()
         {
             InitializeComponent();
+            //Hooking up DataContext to ViewModel
             DataContext = new SimpleTextEditor.ViewModel.TextHandlerViewModel();
         }
     }
