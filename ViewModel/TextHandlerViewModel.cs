@@ -80,6 +80,7 @@ namespace SimpleTextEditor.ViewModel
             if (openFile.ShowDialog() == true)
             {
                 parent.TextContent = File.ReadAllText(openFile.FileName);
+                //TODO: Save path to variable for later use!
             }
         }
 
