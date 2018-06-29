@@ -1,14 +1,6 @@
-﻿using Microsoft.Win32;
-using SimpleTextEditor.Command;
+﻿using SimpleTextEditor.Command;
 using SimpleTextEditor.Model;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
 
 namespace SimpleTextEditor.ViewModel
 {
