@@ -13,8 +13,8 @@ namespace SimpleTextEditor.Model
     {
         //Stores what text we have currently in file and/or in texteditor
         private string _TextContent;
-
         private string _FilePath;
+        private string _Status;
 
         public string TextContent
         {
@@ -48,6 +48,28 @@ namespace SimpleTextEditor.Model
             }
         }
 
+        public string Status
+        {
+            get
+            {
+                return _Status;
+            }
+            set
+            {
+                if (value != _Status)
+                {
+                    _Status = value;
+                    RaisePropertyChanged("Status");
+                }
+            }
+        }
+
+        //At this point littlebit unnessecary...
+        private void SetStatus(string message)
+        {
+            Status = message;
+        }
+
         #region CommandStuff
         public bool OpenIsValid()
         {
@@ -56,6 +78,7 @@ namespace SimpleTextEditor.Model
 
         public void OpenExecute()
         {
+            SetStatus("Opening file...");
             //Creates new OpenFileDialog called openFile
             OpenFileDialog openFile = new OpenFileDialog();
 
@@ -67,6 +90,7 @@ namespace SimpleTextEditor.Model
                 RaisePropertyChanged("TextContent");
                 //We save the path so we can enable the save button
                 this.FilePath = openFile.FileName;
+                SetStatus(String.Format("File opened: {0}", this.FilePath));
             }
         }
 
@@ -76,11 +100,14 @@ namespace SimpleTextEditor.Model
         }
         public void SaveAsExecute()
         {
+            SetStatus("Saving file...");
             SaveFileDialog saveFile = new SaveFileDialog();
 
             if (saveFile.ShowDialog() == true)
             {
                 File.WriteAllText(saveFile.FileName, this.TextContent);
+                this.FilePath = saveFile.FileName;
+                SetStatus(String.Format("File saved to: {0}", saveFile.FileName));
             }
         }
 
@@ -100,6 +127,7 @@ namespace SimpleTextEditor.Model
         public void SaveExecute()
         {
             File.WriteAllText(this.FilePath, this.TextContent);
+            SetStatus(String.Format("File saved to: {0}", this.FilePath));
         }
         #endregion
 

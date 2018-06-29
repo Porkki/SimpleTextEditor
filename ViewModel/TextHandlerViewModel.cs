@@ -33,6 +33,9 @@ namespace SimpleTextEditor.ViewModel
             if(e.PropertyName == "TextContent")
             {
                 TextContent = handlerModel.TextContent;
+            } else if (e.PropertyName == "Status")
+            {
+                Status = handlerModel.Status;
             }
         }
 
@@ -51,16 +54,16 @@ namespace SimpleTextEditor.ViewModel
             }
         }
 
-        public string FilePath
+        public string Status
         {
             get
             {
-                return handlerModel.FilePath;
+                return handlerModel.Status;
             }
             set
             {
-                handlerModel.FilePath = value;
-                RaisePropertyChanged("FilePath");
+                handlerModel.Status = value;
+                RaisePropertyChanged("Status");
             }
         }
 
