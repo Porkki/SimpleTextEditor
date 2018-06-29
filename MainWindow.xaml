@@ -10,6 +10,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="20"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20"/>
@@ -26,12 +27,27 @@
                     <MenuItem Header="_Save As..." Command="{Binding SaveAsCommand}"/>
                     <MenuItem Header="_Exit"/>
                 </MenuItem>
+                <MenuItem Header="_Edit">
+                    <MenuItem Header="_Cut" Command="{Binding CutCommand}"/>
+                    <MenuItem Header="_Copy" Command="{Binding CopyCommand}"/>
+                    <MenuItem Header="_Paste" Command="{Binding PasteCommand}"/>
+                    <MenuItem Header="_Select All" Command="{Binding SelectAllCommand}"/>
+                </MenuItem>
             </Menu>
             <StackPanel></StackPanel>
         </DockPanel>
 
         <TextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" 
                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                 TextWrapping="Wrap" Text="{Binding TextContent, UpdateSourceTrigger=PropertyChanged}"/>
+                 TextWrapping="Wrap"  AcceptsReturn="True"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                 ScrollViewer.VerticalScrollBarVisibility="Auto"
+                 Text="{Binding TextContent, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <StackPanel Orientation="Horizontal" Grid.Row="2" 
+                    Grid.Column="0" Grid.ColumnSpan="3" 
+                    Background="Gainsboro">
+            <TextBlock Margin="10,0,0,0" Text="{Binding Status}"/>
+        </StackPanel>
     </Grid>
 </Window>
