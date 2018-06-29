@@ -1,4 +1,5 @@
-﻿using SimpleTextEditor.Command;
+﻿using System;
+using SimpleTextEditor.Command;
 using SimpleTextEditor.Model;
 using System.ComponentModel;
 
