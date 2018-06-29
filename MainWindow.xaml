@@ -10,6 +10,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="20"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20"/>
@@ -33,5 +34,11 @@
         <TextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" 
                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                  TextWrapping="Wrap" Text="{Binding TextContent, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <StackPanel Orientation="Horizontal" Grid.Row="2" 
+                    Grid.Column="0" Grid.ColumnSpan="3" 
+                    Background="Gainsboro">
+            <TextBlock Margin="10,0,0,0" Text="{Binding Status}"/>
+        </StackPanel>
     </Grid>
 </Window>
