@@ -71,6 +71,18 @@ namespace SimpleTextEditor.Model
         }
 
         #region CommandStuff
+        public bool NewIsValid()
+        {
+            return true;
+        }
+        public void NewExecute()
+        {
+            SetStatus("Creating new file...");
+            FilePath = "";
+            TextContent = "";
+            SetStatus("New file created!");
+        }
+
         public bool OpenIsValid()
         {
             return true;

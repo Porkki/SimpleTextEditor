@@ -11,6 +11,7 @@ namespace SimpleTextEditor.ViewModel
         public TextHandlerModel handlerModel { get; set; }
 
         //Commands (for buttons etc)
+        public ButtonCommand NewCommand { get; private set; }
         public ButtonCommand OpenCommand { get; private set; }
         public ButtonCommand SaveAsCommand { get; private set; }
         public ButtonCommand SaveCommand { get; private set; }
@@ -22,20 +23,24 @@ namespace SimpleTextEditor.ViewModel
             //We need to listen the modifications what happen in the model so we can tell the ui to update
             handlerModel.PropertyChanged += HandlerModel_PropertyChanged;
             //Buttons
+            NewCommand = new ButtonCommand(handlerModel.NewExecute, handlerModel.NewIsValid);
             OpenCommand = new ButtonCommand(handlerModel.OpenExecute, handlerModel.OpenIsValid);
             SaveAsCommand = new ButtonCommand(handlerModel.SaveAsExecute, handlerModel.SaveAsIsValid);
             SaveCommand = new ButtonCommand(handlerModel.SaveExecute, handlerModel.SaveIsValid, this);
         }
-
+        
+        /*If we receive information that something in models property is changed, 
+         * we update it in viewmodel and therefore in the view too */
         private void HandlerModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            //If we receive information that the TextContent is changed then we will update it in the viewmodel
-            if(e.PropertyName == "TextContent")
+            switch (e.PropertyName)
             {
-                TextContent = handlerModel.TextContent;
-            } else if (e.PropertyName == "Status")
-            {
-                Status = handlerModel.Status;
+                case "TextContent":
+                    TextContent = handlerModel.TextContent;
+                    break;
+                case "Status":
+                    Status = handlerModel.Status;
+                    break;
             }
         }
 
