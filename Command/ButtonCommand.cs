@@ -25,7 +25,7 @@ namespace SimpleTextEditor.Command
         /// </summary>
         /// <param name="action"></param>
         /// <param name="function"></param>
-        /// <param name="parent">Pass this keyword from TextHandlerViewModel</param>
+        /// <param name="parent">Pass "this" keyword from TextHandlerViewModel</param>
         public ButtonCommand(Action action, Func<bool> function, TextHandlerViewModel parent)
         {
             _Action = action;
