@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.ComponentModel;
 using Microsoft.Win32;
 using System.IO;
+using System.Windows;
 
 namespace SimpleTextEditor.Model
 {
@@ -140,6 +141,15 @@ namespace SimpleTextEditor.Model
         {
             File.WriteAllText(this.FilePath, this.TextContent);
             SetStatus(String.Format("File saved to: {0}", this.FilePath));
+        }
+
+        public bool ExitIsValid()
+        {
+            return true;
+        }
+        public void ExitExecute()
+        {
+            Application.Current.MainWindow.Close();
         }
         #endregion
 

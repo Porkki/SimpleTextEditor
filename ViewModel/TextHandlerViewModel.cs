@@ -15,6 +15,7 @@ namespace SimpleTextEditor.ViewModel
         public ButtonCommand OpenCommand { get; private set; }
         public ButtonCommand SaveAsCommand { get; private set; }
         public ButtonCommand SaveCommand { get; private set; }
+        public ButtonCommand ExitCommand { get; private set; }
 
         public TextHandlerViewModel()
         {
@@ -27,6 +28,7 @@ namespace SimpleTextEditor.ViewModel
             OpenCommand = new ButtonCommand(handlerModel.OpenExecute, handlerModel.OpenIsValid);
             SaveAsCommand = new ButtonCommand(handlerModel.SaveAsExecute, handlerModel.SaveAsIsValid);
             SaveCommand = new ButtonCommand(handlerModel.SaveExecute, handlerModel.SaveIsValid, this);
+            ExitCommand = new ButtonCommand(handlerModel.ExitExecute, handlerModel.ExitIsValid);
         }
         
         /*If we receive information that something in models property is changed, 
