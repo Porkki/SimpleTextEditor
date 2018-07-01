@@ -43,6 +43,18 @@ namespace SimpleTextEditor.ViewModel
                 case "Status":
                     Status = handlerModel.Status;
                     break;
+                case "WindowTitle":
+                    //We route the models raiseproperty to vm raiseproperty so the view is notified that it has changed
+                    RaisePropertyChanged("WindowTitle");
+                    break;
+            }
+        }
+
+        public string WindowTitle
+        {
+            get
+            {
+                return handlerModel.WindowTitle;
             }
         }
 
