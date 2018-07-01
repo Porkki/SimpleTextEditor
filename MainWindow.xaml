@@ -5,12 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SimpleTextEditor"
         mc:Ignorable="d"
-        Title="Simple Text Editor" Height="450" Width="800">
+        Title="{Binding WindowTitle}" Height="450" Width="800">
+    <!--TODO: Interaction.triggers for closing application-->
     <Window.InputBindings>
         <KeyBinding Key="N" Modifiers="Ctrl" Command="{Binding NewCommand}"/>
         <KeyBinding Key="O" Modifiers="Ctrl" Command="{Binding OpenCommand}"/>
         <KeyBinding Key="S" Modifiers="Ctrl" Command="{Binding SaveAsCommand}"/>
     </Window.InputBindings>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>

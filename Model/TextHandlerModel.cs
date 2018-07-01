@@ -16,6 +16,13 @@ namespace SimpleTextEditor.Model
         private string _TextContent;
         private string _FilePath;
         private string _Status;
+        private string _WindowTitle;
+        private string _WindowTitlePrefix = "Simple Text Editor";
+
+        //Variables to see if text is modified after file open
+        private string _LoadedText;
+        private bool _TextChanged = false;
+        
 
         public string TextContent
         {
@@ -29,6 +36,11 @@ namespace SimpleTextEditor.Model
                 {
                     _TextContent = value;
                     RaisePropertyChanged("TextContent");
+
+                    if (_LoadedText != _TextContent)
+                    {
+                        _TextChanged = true;
+                    }
                 }
             }
         }
@@ -65,6 +77,28 @@ namespace SimpleTextEditor.Model
             }
         }
 
+        public string WindowTitle
+        {
+            get
+            {
+                if (_WindowTitle == String.Empty || _WindowTitle == null)
+                {
+                    return _WindowTitlePrefix;
+                } else
+                {
+                    return string.Format("{0} - {1}", _WindowTitlePrefix, _WindowTitle);
+                }
+            }
+            set
+            {
+                if (value != _WindowTitle)
+                {
+                    _WindowTitle = value;
+                    RaisePropertyChanged("WindowTitle");
+                }
+            }
+        }
+
         //At this point littlebit unnessecary...
         private void SetStatus(string message)
         {
@@ -81,6 +115,7 @@ namespace SimpleTextEditor.Model
             SetStatus("Creating new file...");
             FilePath = "";
             TextContent = "";
+            WindowTitle = "New File";
             SetStatus("New file created!");
         }
 
@@ -99,7 +134,10 @@ namespace SimpleTextEditor.Model
              * textcontent to whatever file user decides to open */
             if (openFile.ShowDialog() == true)
             {
+                this._TextChanged = false;
+                this._LoadedText = File.ReadAllText(openFile.FileName);
                 this.TextContent = File.ReadAllText(openFile.FileName);
+                this.WindowTitle = openFile.SafeFileName;
                 RaisePropertyChanged("TextContent");
                 //We save the path so we can enable the save button
                 this.FilePath = openFile.FileName;
@@ -120,6 +158,7 @@ namespace SimpleTextEditor.Model
             {
                 File.WriteAllText(saveFile.FileName, this.TextContent);
                 this.FilePath = saveFile.FileName;
+                this.WindowTitle = saveFile.SafeFileName;
                 SetStatus(String.Format("File saved to: {0}", saveFile.FileName));
             }
         }
@@ -149,7 +188,19 @@ namespace SimpleTextEditor.Model
         }
         public void ExitExecute()
         {
-            Application.Current.MainWindow.Close();
+            if (this._TextChanged)
+            {
+                MessageBoxResult ExitConfirm = MessageBox.Show("Are you sure you want to exit without saving?", "Confirmation",
+            MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if (ExitConfirm == MessageBoxResult.Yes)
+                {
+                    Application.Current.MainWindow.Close();
+                }
+            } else
+            {
+                Application.Current.MainWindow.Close();
+            }
+            
         }
         #endregion
 
