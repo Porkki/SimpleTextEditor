@@ -17,6 +17,11 @@ namespace SimpleTextEditor.Model
         private string _FilePath;
         private string _Status;
 
+        //Variables to see if text is modified after file open
+        private string _LoadedText;
+        private bool _TextChanged = false;
+        
+
         public string TextContent
         {
             get
@@ -29,6 +34,11 @@ namespace SimpleTextEditor.Model
                 {
                     _TextContent = value;
                     RaisePropertyChanged("TextContent");
+
+                    if (_LoadedText != _TextContent)
+                    {
+                        _TextChanged = true;
+                    }
                 }
             }
         }
@@ -99,6 +109,8 @@ namespace SimpleTextEditor.Model
              * textcontent to whatever file user decides to open */
             if (openFile.ShowDialog() == true)
             {
+                this._TextChanged = false;
+                this._LoadedText = File.ReadAllText(openFile.FileName);
                 this.TextContent = File.ReadAllText(openFile.FileName);
                 RaisePropertyChanged("TextContent");
                 //We save the path so we can enable the save button
@@ -149,7 +161,19 @@ namespace SimpleTextEditor.Model
         }
         public void ExitExecute()
         {
-            Application.Current.MainWindow.Close();
+            if (this._TextChanged)
+            {
+                MessageBoxResult ExitConfirm = MessageBox.Show("Are you sure you want to exit without saving?", "Confirmation",
+            MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if (ExitConfirm == MessageBoxResult.Yes)
+                {
+                    Application.Current.MainWindow.Close();
+                }
+            } else
+            {
+                Application.Current.MainWindow.Close();
+            }
+            
         }
         #endregion
 
