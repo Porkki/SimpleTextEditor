@@ -39,6 +39,9 @@
                     <MenuItem Header="_Exit" Command="{Binding ExitCommand}"/>
                 </MenuItem>
                 <MenuItem Header="_Edit">
+                    <MenuItem Header="_Undo" Command="ApplicationCommands.Undo"/>
+                    <MenuItem Header="_Redo" Command="ApplicationCommands.Redo"/>
+                    <Separator/>
                     <MenuItem Header="_Cut" Command="ApplicationCommands.Cut"/>
                     <MenuItem Header="_Copy" Command="ApplicationCommands.Copy"/>
                     <MenuItem Header="_Paste" Command="ApplicationCommands.Paste"/>
