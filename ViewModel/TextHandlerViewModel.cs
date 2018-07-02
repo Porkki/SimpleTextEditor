@@ -2,6 +2,7 @@
 using SimpleTextEditor.Command;
 using SimpleTextEditor.Model;
 using System.ComponentModel;
+using System.Collections.ObjectModel;
 
 namespace SimpleTextEditor.ViewModel
 {
@@ -17,6 +18,25 @@ namespace SimpleTextEditor.ViewModel
         public ButtonCommand SaveCommand { get; private set; }
         public ButtonCommand ExitCommand { get; private set; }
 
+        private ObservableCollection<Item> _Titles;
+        public ObservableCollection<Item> Titles
+        {
+            get
+            {
+                return _Titles;
+            }
+            set
+            {
+                _Titles = value;
+                RaisePropertyChanged("Titles");
+            }
+        }
+
+        public class Item
+        {
+            public string Header { get; set; }
+        }
+
         public TextHandlerViewModel()
         {
             //Assigning handerlModel new instance of TextHandlerModel
@@ -29,6 +49,11 @@ namespace SimpleTextEditor.ViewModel
             SaveAsCommand = new ButtonCommand(handlerModel.SaveAsExecute, handlerModel.SaveAsIsValid);
             SaveCommand = new ButtonCommand(handlerModel.SaveExecute, handlerModel.SaveIsValid, this);
             ExitCommand = new ButtonCommand(handlerModel.ExitExecute, handlerModel.ExitIsValid);
+
+            Titles = new ObservableCollection<Item>();
+            Titles.Add(new Item { Header = "Tab 1" });
+            Titles.Add(new Item { Header = "Tab 2" });
+            Titles.Add(new Item { Header = "Tab 3" });
         }
         
         /*If we receive information that something in models property is changed, 

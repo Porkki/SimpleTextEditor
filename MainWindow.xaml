@@ -16,6 +16,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="20"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="20"/>
         </Grid.RowDefinitions>
@@ -50,15 +51,23 @@
             </Menu>
             <StackPanel></StackPanel>
         </DockPanel>
-
-        <TextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" 
+        <TabControl Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
+                    ItemsSource="{Binding Titles, Mode=TwoWay}">
+            <TabControl.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Header}"/>
+                </DataTemplate>
+            </TabControl.ItemTemplate>
+            
+        </TabControl>
+        <TextBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" 
                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                  TextWrapping="Wrap"  AcceptsReturn="True"
                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                  ScrollViewer.VerticalScrollBarVisibility="Auto"
                  Text="{Binding TextContent, UpdateSourceTrigger=PropertyChanged}"/>
 
-        <StackPanel Orientation="Horizontal" Grid.Row="2" 
+        <StackPanel Orientation="Horizontal" Grid.Row="3" 
                     Grid.Column="0" Grid.ColumnSpan="3" 
                     Background="Gainsboro">
             <TextBlock Margin="5,0,0,0" Text="{Binding Status}"/>
