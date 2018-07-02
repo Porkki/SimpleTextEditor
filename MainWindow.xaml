@@ -29,20 +29,20 @@
                    Grid.ColumnSpan="3">
             <Menu DockPanel.Dock="Top">
                 <MenuItem Header="_File">
-                    <MenuItem Header="_New" Command="{Binding NewCommand}" InputGestureText="Ctrl + N"/>
+                    <MenuItem Header="_New" Command="{Binding NewCommand}" InputGestureText="Ctrl+N"/>
                     <Separator/>
-                    <MenuItem Header="_Open" Command="{Binding OpenCommand}" InputGestureText="Ctrl + O"/>
+                    <MenuItem Header="_Open" Command="{Binding OpenCommand}" InputGestureText="Ctrl+O"/>
                     <Separator/>
                     <MenuItem Header="_Save" Command="{Binding SaveCommand}"/>
-                    <MenuItem Header="_Save As..." Command="{Binding SaveAsCommand}" InputGestureText="Ctrl + S"/>
+                    <MenuItem Header="_Save As..." Command="{Binding SaveAsCommand}" InputGestureText="Ctrl+S"/>
                     <Separator/>
                     <MenuItem Header="_Exit" Command="{Binding ExitCommand}"/>
                 </MenuItem>
                 <MenuItem Header="_Edit">
-                    <MenuItem Header="_Cut" Command="{Binding CutCommand}"/>
-                    <MenuItem Header="_Copy" Command="{Binding CopyCommand}"/>
-                    <MenuItem Header="_Paste" Command="{Binding PasteCommand}"/>
-                    <MenuItem Header="_Select All" Command="{Binding SelectAllCommand}"/>
+                    <MenuItem Header="_Cut" Command="ApplicationCommands.Cut"/>
+                    <MenuItem Header="_Copy" Command="ApplicationCommands.Copy"/>
+                    <MenuItem Header="_Paste" Command="ApplicationCommands.Paste"/>
+                    <MenuItem Header="_Select All" Command="ApplicationCommands.SelectAll"/>
                 </MenuItem>
             </Menu>
             <StackPanel></StackPanel>
