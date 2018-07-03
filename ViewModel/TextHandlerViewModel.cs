@@ -11,6 +11,9 @@ namespace SimpleTextEditor.ViewModel
         //Creating an instance of the TextHandlerModel
         public TextHandlerModel handlerModel { get; set; }
 
+        //Creating an instance of the TabModel
+        public TabModel TabsModel { get; set; }
+
         //Commands (for buttons etc)
         public ButtonCommand NewCommand { get; private set; }
         public ButtonCommand OpenCommand { get; private set; }
@@ -18,42 +21,39 @@ namespace SimpleTextEditor.ViewModel
         public ButtonCommand SaveCommand { get; private set; }
         public ButtonCommand ExitCommand { get; private set; }
 
-        private int _TabIndex = 0;
-        private ObservableCollection<Item> _Titles;
-        public ObservableCollection<Item> Titles
+        public ButtonCommand NewTabCommand { get; private set; }
+        public ButtonCommand RemoveTabCommand { get; private set; }
+
+        public ObservableCollection<TabItems> TabItems
         {
             get
             {
-                return _Titles;
+                return TabsModel.TabItems;
             }
             set
             {
-                _Titles = value;
-                RaisePropertyChanged("Titles");
+                TabsModel.TabItems = value;
+                RaisePropertyChanged("TabItems");
             }
         }
-
-        public class Item
+        public int SelectedTab
         {
-            public string Header { get; set; }
-            public ButtonCommand RemoveTab { get; set; }
-            public int Index;
-        }
-
-        public void RemoveTabExecute()
-        {
-            Titles.RemoveAt(_TabIndex);
-        }
-
-        public bool RemoveTabCanExecute()
-        {
-            return true;
+            get
+            {
+                return TabsModel.SelectedTab;
+            }
+            set
+            {
+                TabsModel.SelectedTab = value;
+                RaisePropertyChanged("SelectedTab");
+            }
         }
 
         public TextHandlerViewModel()
         {
             //Assigning handerlModel new instance of TextHandlerModel
             handlerModel = new TextHandlerModel();
+            TabsModel = new TabModel();
             //We need to listen the modifications what happen in the model so we can tell the ui to update
             handlerModel.PropertyChanged += HandlerModel_PropertyChanged;
             //Buttons
@@ -63,12 +63,8 @@ namespace SimpleTextEditor.ViewModel
             SaveCommand = new ButtonCommand(handlerModel.SaveExecute, handlerModel.SaveIsValid, this);
             ExitCommand = new ButtonCommand(handlerModel.ExitExecute, handlerModel.ExitIsValid);
 
-            Titles = new ObservableCollection<Item>();
-            Titles.Add(new Item { Header = "Tab 1", RemoveTab = new ButtonCommand(RemoveTabExecute,RemoveTabCanExecute), Index=_TabIndex});
-            _TabIndex++;
-            Titles.Add(new Item { Header = "Tab 2" });
-            _TabIndex++;
-            Titles.Add(new Item { Header = "Tab 3" });
+            NewTabCommand = new ButtonCommand(TabsModel.NewTabExecute, TabsModel.NewTabIsValid);
+            RemoveTabCommand = new ButtonCommand(TabsModel.RemoveTabExecute, TabsModel.RemoveTabIsValid);
         }
         
         /*If we receive information that something in models property is changed, 

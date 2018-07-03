@@ -7,6 +7,7 @@ using System.ComponentModel;
 using Microsoft.Win32;
 using System.IO;
 using System.Windows;
+using System.Collections.ObjectModel;
 
 namespace SimpleTextEditor.Model
 {
@@ -22,7 +23,6 @@ namespace SimpleTextEditor.Model
         //Variables to see if text is modified after file open
         private string _LoadedText;
         private bool _TextChanged = false;
-        
 
         public string TextContent
         {

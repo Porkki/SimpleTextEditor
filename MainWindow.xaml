@@ -51,18 +51,21 @@
             </Menu>
             <StackPanel></StackPanel>
         </DockPanel>
-        <TabControl Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
-                    ItemsSource="{Binding Titles, Mode=TwoWay}">
-            <TabControl.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding Header}"/>
-                        <Button Content="X" Command="{Binding RemoveTab}"/>
-                    </StackPanel>
-                </DataTemplate>
-            </TabControl.ItemTemplate>
-            
-        </TabControl>
+        <StackPanel Orientation="Horizontal"  Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3">
+            <Button Content="New tab" Command="{Binding NewTabCommand}"/>
+            <TabControl ItemsSource="{Binding TabItems, Mode=TwoWay}" SelectedIndex="{Binding SelectedTab}">
+                <TabControl.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding Header}"/>
+                            <Button Content="X" Command="{Binding Path=DataContext.RemoveTabCommand, RelativeSource={RelativeSource AncestorType=TabControl}}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </TabControl.ItemTemplate>
+            </TabControl>
+        </StackPanel>
+        
+        
         <TextBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" 
                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                  TextWrapping="Wrap"  AcceptsReturn="True"
