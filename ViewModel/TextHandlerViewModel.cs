@@ -18,6 +18,7 @@ namespace SimpleTextEditor.ViewModel
         public ButtonCommand SaveCommand { get; private set; }
         public ButtonCommand ExitCommand { get; private set; }
 
+        private int _TabIndex = 0;
         private ObservableCollection<Item> _Titles;
         public ObservableCollection<Item> Titles
         {
@@ -35,6 +36,18 @@ namespace SimpleTextEditor.ViewModel
         public class Item
         {
             public string Header { get; set; }
+            public ButtonCommand RemoveTab { get; set; }
+            public int Index;
+        }
+
+        public void RemoveTabExecute()
+        {
+            Titles.RemoveAt(_TabIndex);
+        }
+
+        public bool RemoveTabCanExecute()
+        {
+            return true;
         }
 
         public TextHandlerViewModel()
@@ -51,8 +64,10 @@ namespace SimpleTextEditor.ViewModel
             ExitCommand = new ButtonCommand(handlerModel.ExitExecute, handlerModel.ExitIsValid);
 
             Titles = new ObservableCollection<Item>();
-            Titles.Add(new Item { Header = "Tab 1" });
+            Titles.Add(new Item { Header = "Tab 1", RemoveTab = new ButtonCommand(RemoveTabExecute,RemoveTabCanExecute), Index=_TabIndex});
+            _TabIndex++;
             Titles.Add(new Item { Header = "Tab 2" });
+            _TabIndex++;
             Titles.Add(new Item { Header = "Tab 3" });
         }
         
