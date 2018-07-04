@@ -10,7 +10,6 @@ namespace SimpleTextEditor.Model
 {
     class TabModel : INotifyPropertyChanged
     {
-
         private int _SelectedTab;
         public int SelectedTab
         {
@@ -20,14 +19,37 @@ namespace SimpleTextEditor.Model
             }
             set
             {
-                if (value != _SelectedTab)
+                if (value != _SelectedTab && value != -1) //SelectedTab goes -1 if no tab is selected
                 {
                     _SelectedTab = value;
+                    //Set the Content to the correct tab content
+                    Content = TabItems[SelectedTab].Content;
                     RaisePropertyChanged("SelectedTab");
                 }
             }
         }
 
+        private string _Content;
+        public string Content
+        {
+            get
+            {
+                return TabItems[SelectedTab].Content;
+            }
+            set
+            {
+                if (value != _Content)
+                {
+                    _Content = value;
+                    TabItems[SelectedTab].Content = value;
+                    RaisePropertyChanged("Content");
+                }
+            }
+        }
+
+        /// <summary>
+        /// Creating new ObservableCollection of TabItems where we store information about tabs
+        /// </summary>
         private ObservableCollection<TabItems> _TabItems;
         public ObservableCollection<TabItems> TabItems
         {
@@ -44,7 +66,10 @@ namespace SimpleTextEditor.Model
 
         public TabModel()
         {
+            //Intializing TabItems
             TabItems = new ObservableCollection<TabItems>();
+            //Adding default tab
+            TabItems.Add(new TabItems("Default", ""));
         }
 
         public bool NewTabIsValid()
@@ -54,13 +79,20 @@ namespace SimpleTextEditor.Model
         private int x = 0;
         public void NewTabExecute()
         {
-            TabItems.Add(new TabItems(x.ToString(), "ASD"));
+            TabItems.Add(new TabItems(String.Format("New File {0}",x.ToString()), ""));
+            SelectedTab = TabItems.Count - 1;
             x++;
         }
 
         public bool RemoveTabIsValid()
         {
-            return true;
+            if (TabItems.Count <= 1)
+            {
+                return false;
+            } else
+            {
+                return true;
+            }
         }
 
         public void RemoveTabExecute()
