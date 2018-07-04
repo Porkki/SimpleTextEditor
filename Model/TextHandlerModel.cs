@@ -16,6 +16,7 @@ namespace SimpleTextEditor.Model
         //Stores what text we have currently in file and/or in texteditor
         private string _TextContent;
         private string _FilePath;
+        private string _FileName;
         private string _Status;
         private string _WindowTitle;
         private string _WindowTitlePrefix = "Simple Text Editor";
@@ -77,6 +78,23 @@ namespace SimpleTextEditor.Model
             }
         }
 
+        public string FileName
+        {
+            get
+            {
+                return _FileName;
+            }
+            set
+            {
+                if (value != _FileName)
+                {
+                    _FileName = value;
+                    RaisePropertyChanged("FileName");
+                }
+
+            }
+        }
+
         public string WindowTitle
         {
             get
@@ -94,6 +112,7 @@ namespace SimpleTextEditor.Model
                 if (value != _WindowTitle)
                 {
                     _WindowTitle = value;
+                    FileName = value;
                     RaisePropertyChanged("WindowTitle");
                 }
             }

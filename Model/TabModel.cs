@@ -10,6 +10,24 @@ namespace SimpleTextEditor.Model
 {
     class TabModel : INotifyPropertyChanged
     {
+        private string _FileName;
+        public string FileName
+        {
+            get
+            {
+                return _FileName;
+            }
+            set
+            {
+                if (value != _FileName)
+                {
+                    _FileName = value;
+                    TabItems[SelectedTab].Header = FileName;
+                    RaisePropertyChanged("FileName");
+                }
+            }
+        }
+
         private int _SelectedTab;
         public int SelectedTab
         {
@@ -52,8 +70,6 @@ namespace SimpleTextEditor.Model
             }
         }
 
-        public string FileName { get; set; }
-
         /// <summary>
         /// Creating new ObservableCollection of TabItems where we store information about tabs
         /// </summary>
@@ -86,7 +102,9 @@ namespace SimpleTextEditor.Model
         private int x = 0;
         public void NewTabExecute()
         {
-            TabItems.Add(new TabItems(String.Format("New File {0}",x.ToString()), ""));
+            string tabname = String.Format("New File {0}", x.ToString());
+            TabItems.Add(new TabItems(tabname, ""));
+            FileName = tabname;
             SelectedTab = TabItems.Count - 1; //Move view to new tab
             x++;
         }

@@ -51,6 +51,9 @@ namespace SimpleTextEditor.ViewModel
                     TextContent = TabsModel.Content;
                     SelectedTab = TabsModel.SelectedTab;
                     break;
+                case "FileName":
+                    FileName = TabsModel.FileName;
+                    break;
             }
         }
 
@@ -67,8 +70,12 @@ namespace SimpleTextEditor.ViewModel
                     Status = handlerModel.Status;
                     break;
                 case "WindowTitle":
-                    //We route the models raiseproperty to vm raiseproperty so the view is notified that it has changed
+                    //We route the models raiseproperty to vm raiseproperty so the view is notified that it has changed,
+                    //Because windowtitle can only be get from vm.
                     RaisePropertyChanged("WindowTitle");
+                    break;
+                case "FileName":
+                    FileName = handlerModel.FileName;
                     break;
             }
         }
@@ -78,6 +85,20 @@ namespace SimpleTextEditor.ViewModel
             get
             {
                 return handlerModel.WindowTitle;
+            }
+        }
+
+        public string FileName
+        {
+            get
+            {
+                return handlerModel.FileName;
+            }
+            set
+            {
+                handlerModel.FileName = value;
+                TabsModel.FileName = value;
+                RaisePropertyChanged("Header");
             }
         }
 
