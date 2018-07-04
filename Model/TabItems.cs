@@ -8,7 +8,11 @@ namespace SimpleTextEditor.Model
 {
     class TabItems
     {
-
+        /// <summary>
+        /// Default constructor for TabItems
+        /// </summary>
+        /// <param name="header">Tab Name/Title</param>
+        /// <param name="content"></param>
         public TabItems(string header, string content)
         {
             Header = header;
