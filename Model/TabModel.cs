@@ -19,10 +19,15 @@ namespace SimpleTextEditor.Model
             }
             set
             {
-                if (value != _SelectedTab && value != -1) //SelectedTab goes -1 if no tab is selected
+                if (value != _SelectedTab && value != -1) //SelectedTab goes -1 if no tab is selected ex. when tab is removed
                 {
                     _SelectedTab = value;
                     //Set the Content to the correct tab content
+                    Content = TabItems[SelectedTab].Content;
+                    RaisePropertyChanged("SelectedTab");
+                } else if (value == -1) //We default the view to the first tab in the TabItems
+                {
+                    _SelectedTab = 0;
                     Content = TabItems[SelectedTab].Content;
                     RaisePropertyChanged("SelectedTab");
                 }
@@ -46,6 +51,8 @@ namespace SimpleTextEditor.Model
                 }
             }
         }
+
+        public string FileName { get; set; }
 
         /// <summary>
         /// Creating new ObservableCollection of TabItems where we store information about tabs
@@ -80,7 +87,7 @@ namespace SimpleTextEditor.Model
         public void NewTabExecute()
         {
             TabItems.Add(new TabItems(String.Format("New File {0}",x.ToString()), ""));
-            SelectedTab = TabItems.Count - 1;
+            SelectedTab = TabItems.Count - 1; //Move view to new tab
             x++;
         }
 
