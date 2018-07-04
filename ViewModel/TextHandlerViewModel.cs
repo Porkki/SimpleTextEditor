@@ -24,31 +24,6 @@ namespace SimpleTextEditor.ViewModel
         public ButtonCommand NewTabCommand { get; private set; }
         public ButtonCommand RemoveTabCommand { get; private set; }
 
-        public ObservableCollection<TabItems> TabItems
-        {
-            get
-            {
-                return TabsModel.TabItems;
-            }
-            set
-            {
-                TabsModel.TabItems = value;
-                RaisePropertyChanged("TabItems");
-            }
-        }
-        public int SelectedTab
-        {
-            get
-            {
-                return TabsModel.SelectedTab;
-            }
-            set
-            {
-                TabsModel.SelectedTab = value;
-                RaisePropertyChanged("SelectedTab");
-            }
-        }
-
         public TextHandlerViewModel()
         {
             //Assigning handerlModel new instance of TextHandlerModel
@@ -56,6 +31,7 @@ namespace SimpleTextEditor.ViewModel
             TabsModel = new TabModel();
             //We need to listen the modifications what happen in the model so we can tell the ui to update
             handlerModel.PropertyChanged += HandlerModel_PropertyChanged;
+            TabsModel.PropertyChanged += TabsModel_PropertyChanged;
             //Buttons
             NewCommand = new ButtonCommand(handlerModel.NewExecute, handlerModel.NewIsValid);
             OpenCommand = new ButtonCommand(handlerModel.OpenExecute, handlerModel.OpenIsValid);
@@ -64,9 +40,20 @@ namespace SimpleTextEditor.ViewModel
             ExitCommand = new ButtonCommand(handlerModel.ExitExecute, handlerModel.ExitIsValid);
 
             NewTabCommand = new ButtonCommand(TabsModel.NewTabExecute, TabsModel.NewTabIsValid);
-            RemoveTabCommand = new ButtonCommand(TabsModel.RemoveTabExecute, TabsModel.RemoveTabIsValid);
+            RemoveTabCommand = new ButtonCommand(TabsModel.RemoveTabExecute, TabsModel.RemoveTabIsValid, this);
         }
-        
+
+        private void TabsModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case "SelectedTab":
+                    TextContent = TabsModel.Content;
+                    SelectedTab = TabsModel.SelectedTab;
+                    break;
+            }
+        }
+
         /*If we receive information that something in models property is changed, 
          * we update it in viewmodel and therefore in the view too */
         private void HandlerModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -104,6 +91,7 @@ namespace SimpleTextEditor.ViewModel
             set
             {
                 handlerModel.TextContent = value;
+                TabsModel.Content = value;
                 //If we change something ex. opening new file we raise propertychanged event to notify ui
                 RaisePropertyChanged("TextContent");
             }
@@ -119,6 +107,31 @@ namespace SimpleTextEditor.ViewModel
             {
                 handlerModel.Status = value;
                 RaisePropertyChanged("Status");
+            }
+        }
+
+        public ObservableCollection<TabItems> TabItems
+        {
+            get
+            {
+                return TabsModel.TabItems;
+            }
+            set
+            {
+                TabsModel.TabItems = value;
+                RaisePropertyChanged("TabItems");
+            }
+        }
+        public int SelectedTab
+        {
+            get
+            {
+                return TabsModel.SelectedTab;
+            }
+            set
+            {
+                TabsModel.SelectedTab = value;
+                RaisePropertyChanged("SelectedTab");
             }
         }
 
