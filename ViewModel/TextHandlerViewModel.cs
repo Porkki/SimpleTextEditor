@@ -9,10 +9,14 @@ namespace SimpleTextEditor.ViewModel
     class TextHandlerViewModel : INotifyPropertyChanged
     {
         //Creating an instance of the TextHandlerModel
-        public TextHandlerModel handlerModel { get; set; }
+        public TextHandlerModel HandlerModel { get; set; }
 
         //Creating an instance of the TabModel
         public TabModel TabsModel { get; set; }
+
+        public WindowTitleModel TitleModel { get; set; }
+
+        public StatusModel StatusModel { get; set; }
 
         //Commands (for buttons etc)
         public ButtonCommand NewCommand { get; private set; }
@@ -27,20 +31,44 @@ namespace SimpleTextEditor.ViewModel
         public TextHandlerViewModel()
         {
             //Assigning handerlModel new instance of TextHandlerModel
-            handlerModel = new TextHandlerModel();
+            HandlerModel = new TextHandlerModel();
             TabsModel = new TabModel();
+            TitleModel = new WindowTitleModel();
+            StatusModel = new StatusModel();
             //We need to listen the modifications what happen in the model so we can tell the ui to update
-            handlerModel.PropertyChanged += HandlerModel_PropertyChanged;
+            HandlerModel.PropertyChanged += HandlerModel_PropertyChanged;
             TabsModel.PropertyChanged += TabsModel_PropertyChanged;
+            TitleModel.PropertyChanged += TitleModel_PropertyChanged;
+            StatusModel.PropertyChanged += StatusModel_PropertyChanged;
             //Buttons
-            NewCommand = new ButtonCommand(handlerModel.NewExecute, handlerModel.NewIsValid);
-            OpenCommand = new ButtonCommand(handlerModel.OpenExecute, handlerModel.OpenIsValid);
-            SaveAsCommand = new ButtonCommand(handlerModel.SaveAsExecute, handlerModel.SaveAsIsValid);
-            SaveCommand = new ButtonCommand(handlerModel.SaveExecute, handlerModel.SaveIsValid, this);
-            ExitCommand = new ButtonCommand(handlerModel.ExitExecute, handlerModel.ExitIsValid);
+            NewCommand = new ButtonCommand(HandlerModel.NewExecute, HandlerModel.NewIsValid);
+            OpenCommand = new ButtonCommand(HandlerModel.OpenExecute, HandlerModel.OpenIsValid);
+            SaveAsCommand = new ButtonCommand(HandlerModel.SaveAsExecute, HandlerModel.SaveAsIsValid);
+            SaveCommand = new ButtonCommand(HandlerModel.SaveExecute, HandlerModel.SaveIsValid, this);
+            ExitCommand = new ButtonCommand(HandlerModel.ExitExecute, HandlerModel.ExitIsValid);
 
             NewTabCommand = new ButtonCommand(TabsModel.NewTabExecute, TabsModel.NewTabIsValid);
             RemoveTabCommand = new ButtonCommand(TabsModel.RemoveTabExecute, TabsModel.RemoveTabIsValid, this);
+        }
+
+        private void StatusModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case "Status":
+                    Status = StatusModel.Message;
+                    break;
+            }
+        }
+
+        private void TitleModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case "WindowTitle":
+                    RaisePropertyChanged("WindowTitle");
+                    break;
+            }
         }
 
         private void TabsModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -64,18 +92,13 @@ namespace SimpleTextEditor.ViewModel
             switch (e.PropertyName)
             {
                 case "TextContent":
-                    TextContent = handlerModel.TextContent;
+                    TextContent = HandlerModel.TextContent;
                     break;
-                case "Status":
-                    Status = handlerModel.Status;
-                    break;
-                case "WindowTitle":
-                    //We route the models raiseproperty to vm raiseproperty so the view is notified that it has changed,
-                    //Because windowtitle can only be get from vm.
-                    RaisePropertyChanged("WindowTitle");
+                case "StatusMessage":
+                    SetStatus(HandlerModel.StatusMessage);
                     break;
                 case "FileName":
-                    FileName = handlerModel.FileName;
+                    FileName = HandlerModel.FileName;
                     break;
             }
         }
@@ -84,7 +107,7 @@ namespace SimpleTextEditor.ViewModel
         {
             get
             {
-                return handlerModel.WindowTitle;
+                return TitleModel.WindowTitle;
             }
         }
 
@@ -92,12 +115,13 @@ namespace SimpleTextEditor.ViewModel
         {
             get
             {
-                return handlerModel.FileName;
+                return HandlerModel.FileName;
             }
             set
             {
-                handlerModel.FileName = value;
+                HandlerModel.FileName = value;
                 TabsModel.FileName = value;
+                TitleModel.FileName = value;
                 RaisePropertyChanged("Header");
             }
         }
@@ -107,26 +131,31 @@ namespace SimpleTextEditor.ViewModel
         {
             get
             {
-                return handlerModel.TextContent;
+                return HandlerModel.TextContent;
             }
             set
             {
-                handlerModel.TextContent = value;
+                HandlerModel.TextContent = value;
                 TabsModel.Content = value;
                 //If we change something ex. opening new file we raise propertychanged event to notify ui
                 RaisePropertyChanged("TextContent");
             }
         }
 
+        public void SetStatus(string msg)
+        {
+            StatusModel.Message = msg;
+        }
+
         public string Status
         {
             get
             {
-                return handlerModel.Status;
+                return StatusModel.Message;
             }
             set
             {
-                handlerModel.Status = value;
+                StatusModel.Message = value;
                 RaisePropertyChanged("Status");
             }
         }
