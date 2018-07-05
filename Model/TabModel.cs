@@ -37,7 +37,7 @@ namespace SimpleTextEditor.Model
             }
             set
             {
-                if (value != _SelectedTab && value != -1) //SelectedTab goes -1 if no tab is selected ex. when tab is removed
+                if (value != _SelectedTab) //SelectedTab goes -1 if no tab is selected ex. when tab is removed
                 {
                     _SelectedTab = value;
                     //Set the Content to the correct tab content
