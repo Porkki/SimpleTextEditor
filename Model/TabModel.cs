@@ -104,8 +104,8 @@ namespace SimpleTextEditor.Model
         {
             string tabname = String.Format("New File {0}", x.ToString());
             TabItems.Add(new TabItems(tabname, ""));
-            FileName = tabname;
             SelectedTab = TabItems.Count - 1; //Move view to new tab
+            FileName = tabname;
             x++;
         }
 
