@@ -122,7 +122,16 @@ namespace SimpleTextEditor.Model
 
         public void RemoveTabExecute()
         {
+            int TempIndex = SelectedTab;
             TabItems.RemoveAt(SelectedTab);
+            if (TempIndex == 1)
+            {
+                SelectedTab = 0;
+            } else
+            {
+                SelectedTab = TempIndex - 1;
+            }
+            
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
