@@ -42,6 +42,8 @@ namespace SimpleTextEditor.Model
                     _SelectedTab = value;
                     //Set the Content to the correct tab content
                     Content = TabItems[SelectedTab].Content;
+                    //Set the windows title to corresponding tab
+                    FileName = TabItems[SelectedTab].Header;
                     RaisePropertyChanged("SelectedTab");
                 } else if (value == -1) //We default the view to the first tab in the TabItems
                 {

@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:SimpleTextEditor"
         mc:Ignorable="d"
         Title="{Binding WindowTitle}" Height="450" Width="800">
@@ -17,6 +18,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="25"/>
+            <RowDefinition Height="20"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="20"/>
         </Grid.RowDefinitions>
@@ -51,7 +53,22 @@
             </Menu>
             <StackPanel></StackPanel>
         </DockPanel>
-        <StackPanel Orientation="Horizontal"  Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3">
+        <!--FocusManager keeps the focus in the RichTextBox even if we press the buttons-->
+        <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="0"
+                    Grid.ColumnSpan="3" FocusManager.IsFocusScope="True">
+            <Button Command="EditingCommands.ToggleBold"
+                    CommandTarget="{Binding ElementName=_RichTextBox}"
+                    Content="B"
+                    FontWeight="Bold"
+                    MinWidth="25"/>
+            <Button Command="EditingCommands.ToggleItalic"
+                    CommandTarget="{Binding ElementName=_RichTextBox}"
+                    Content="I"
+                    FontStyle="Italic"
+                    MinWidth="25"/>
+        </StackPanel>
+        
+        <StackPanel Orientation="Horizontal"  Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3">
             <Button Content="New tab" Command="{Binding NewTabCommand}"/>
             <TabControl ItemsSource="{Binding TabItems, Mode=TwoWay}" SelectedIndex="{Binding SelectedTab}">
                 <TabControl.ItemTemplate>
@@ -64,16 +81,33 @@
                 </TabControl.ItemTemplate>
             </TabControl>
         </StackPanel>
-        
-        
+
+        <xctk:RichTextBox Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3"
+                          x:Name="_RichTextBox"
+                          Text="{Binding TextContent, UpdateSourceTrigger=PropertyChanged}"
+                          ScrollViewer.VerticalScrollBarVisibility="Auto">
+            <xctk:RichTextBox.TextFormatter>
+                <xctk:RtfFormatter/>
+            </xctk:RichTextBox.TextFormatter>
+            <xctk:RichTextBox.Resources>
+                <Style TargetType="{x:Type Paragraph}">
+                    <Setter Property="Margin" Value="0"/>
+                </Style>
+            </xctk:RichTextBox.Resources>
+            <RichTextBox.CommandBindings>
+                <CommandBinding Command="EditingCommands.ToggleBold"/>
+                <CommandBinding Command="EditingCommands.ToggleItalic"/>
+            </RichTextBox.CommandBindings>
+        </xctk:RichTextBox>
+        <!--
         <TextBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" 
                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                  TextWrapping="Wrap"  AcceptsReturn="True"
                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                  ScrollViewer.VerticalScrollBarVisibility="Auto"
                  Text="{Binding TextContent, UpdateSourceTrigger=PropertyChanged}"/>
-
-        <StackPanel Orientation="Horizontal" Grid.Row="3" 
+        -->
+        <StackPanel Orientation="Horizontal" Grid.Row="4" 
                     Grid.Column="0" Grid.ColumnSpan="3" 
                     Background="Gainsboro">
             <TextBlock Margin="5,0,0,0" Text="{Binding Status}"/>
